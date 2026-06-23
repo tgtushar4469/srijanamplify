@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amplify & CO. | Premium Branding & Cinematography</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+    <script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored book-btn" onclick="scrollToBooking()">
+                Book an Appointment
+            </button>
+        </div>
+        <div class="header-center">
+            <div class="logo-container">
+                <img src="logo.png" alt="Amplify & CO. Logo" class="logo-img" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                <div class="logo-fallback">
+                    <div class="logo-text">AMPLIFY & CO.</div>
+                    <div class="logo-subtext">BRANDING. ADVERTISING. CINEMATOGRAPHY. PHOTOGRAPHY.</div>
+                </div>
+            </div>
+        </div>
+        <div class="header-right">
+            <button class="mdl-button mdl-js-button mdl-button--raised login-btn" id="loginBtn" onclick="openPremiumLogin()">
+                Login
+            </button>
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-container" onclick="toggleProfileDropdown()">
+                    <img src="" alt="Profile" class="profile-photo" id="profilePhoto">
+                    <span class="profile-name" id="profileName">User Name</span>
+                    <div class="dropdown-menu" id="profileDropdown">
+                        <button class="dropdown-item" onclick="showMyProfile()">
+                            <span>👤</span> My Profile
+                        </button>
+                        <button class="dropdown-item" onclick="showMyBookings()">
+                            <span>📅</span> My Bookings
+                        </button>
+                        <button class="dropdown-item logout-item" onclick="handleLogout()">
+                            <span>🚪</span> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1 class="hero-title fade-in">Your Story. Our Creativity. Real Results.</h1>
+            <p class="hero-subtitle fade-in">We don't just create content. We create brand growth.</p>
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent hero-cta fade-in" onclick="scrollToWhyUs()">
+                Discover More
+            </button>
+        </div>
+        <div class="hero-background"></div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="why-us-section" id="why-us">
+        <div class="container">
+            <h2 class="section-title fade-in">Why Choose Us?</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📸</div>
+                    <h3>Premium Photography & Cinematography</h3>
+                    <p>Create visuals that make your brand unforgettable.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Strategic Brand Promotion</h3>
+                    <p>Reach the right audience with the right message.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎯</div>
+                    <h3>Results That Matter</h3>
+                    <p>More engagement, stronger branding, and better conversions.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Creative Partner</h3>
+                    <p>We work with your brand as if it's our own.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Creativity Section - Scroll Triggered Gallery -->
+    <section class="creativity-section" id="creativity">
+        <div class="container">
+            <h2 class="section-title fade-in">Our Creativity</h2>
+            <p class="section-subtitle fade-in">Explore our portfolio of stunning visuals</p>
+        </div>
+        <div class="scroll-gallery" id="scrollGallery">
+            <!-- Gallery items will be dynamically loaded with scroll animations -->
+            <div class="gallery-scroll-item photo-item" data-index="0">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Photo 1</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Premium Photography</div>
+            </div>
+            <div class="gallery-scroll-item video-item" data-index="1">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Video 1</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Cinematic Excellence</div>
+            </div>
+            <div class="gallery-scroll-item photo-item" data-index="2">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Photo 2</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Brand Storytelling</div>
+            </div>
+            <div class="gallery-scroll-item video-item" data-index="3">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Video 2</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Visual Impact</div>
+            </div>
+            <div class="gallery-scroll-item photo-item" data-index="4">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Photo 3</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Creative Vision</div>
+            </div>
+            <div class="gallery-scroll-item video-item" data-index="5">
+                <div class="gallery-media-container">
+                    <div class="placeholder-content">
+                        <span>Video 3</span>
+                    </div>
+                </div>
+                <div class="gallery-caption">Motion Graphics</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking Section with Glassmorphism Form -->
+    <section class="booking-section" id="booking">
+        <div class="booking-background"></div>
+        <div class="container">
+            <h2 class="section-title fade-in">Book an Appointment</h2>
+            <p class="section-subtitle fade-in">Let's create something amazing together</p>
+            
+            <div class="glassmorphism-form" id="bookingFormContainer">
+                <button class="close-glass-btn" onclick="closeGlassBooking()">&times;</button>
+                <form id="bookingForm" onsubmit="submitBooking(event)">
+                    <div class="glass-input-group">
+                        <input type="text" id="bookingName" class="glass-input" required>
+                        <label class="glass-label">Name</label>
+                        <span class="glass-highlight"></span>
+                    </div>
+                    <div class="glass-input-group">
+                        <input type="text" id="bookingAddress" class="glass-input" required>
+                        <label class="glass-label">Address</label>
+                        <span class="glass-highlight"></span>
+                    </div>
+                    <div class="glass-input-group">
+                        <input type="email" id="bookingEmail" class="glass-input" required>
+                        <label class="glass-label">Gmail</label>
+                        <span class="glass-highlight"></span>
+                    </div>
+                    <div class="glass-input-group">
+                        <input type="tel" id="bookingPhone" class="glass-input" required>
+                        <label class="glass-label">Phone Number</label>
+                        <span class="glass-highlight"></span>
+                    </div>
+                    <div class="glass-input-group">
+                        <textarea id="bookingType" class="glass-input glass-textarea" rows="3"></textarea>
+                        <label class="glass-label">Type of Editing</label>
+                        <span class="glass-highlight"></span>
+                    </div>
+                    
+                    <!-- Premium CAPTCHA -->
+                    <div class="premium-captcha">
+                        <div class="captcha-canvas" id="captchaCanvas"></div>
+                        <div class="glass-input-group captcha-input">
+                            <input type="text" id="captchaInput" class="glass-input" required>
+                            <label class="glass-label">Enter CAPTCHA</label>
+                            <span class="glass-highlight"></span>
+                        </div>
+                        <button type="button" class="refresh-captcha-btn" onclick="generatePremiumCaptcha()">
+                            <span>🔄</span>
+                        </button>
+                    </div>
+                    
+                    <button type="submit" class="glass-submit-btn">
+                        <span class="btn-text">Submit</span>
+                        <span class="btn-icon">→</span>
+                    </button>
+                </form>
+            </div>
+            
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--accent booking-trigger-btn fade-in" onclick="openGlassBooking()" id="bookingTriggerBtn">
+                Book Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Premium Full-Screen Login -->
+    <div class="premium-login" id="premiumLogin">
+        <div class="login-background">
+            <div class="login-particle"></div>
+            <div class="login-particle"></div>
+            <div class="login-particle"></div>
+            <div class="login-particle"></div>
+            <div class="login-particle"></div>
+        </div>
+        <div class="login-content-wrapper">
+            <button class="login-close-btn" onclick="closePremiumLogin()">&times;</button>
+            <div class="login-brand">
+                <h1>Amplify & CO.</h1>
+                <p>Welcome Back</p>
+            </div>
+            
+            <div class="login-methods">
+                <div class="login-method-card active" id="googleMethod">
+                    <div class="method-icon">G</div>
+                    <h3>Continue with Google</h3>
+                    <p>Sign in with your Google account</p>
+                    <div id="googleSignInButton"></div>
+                </div>
+                
+                <div class="login-divider">
+                    <span>or</span>
+                </div>
+                
+                <div class="login-method-card" id="phoneMethod">
+                    <div class="method-icon">📱</div>
+                    <h3>Continue with Phone</h3>
+                    <p>Enter your phone number for OTP verification</p>
+                    <div class="phone-login-form">
+                        <div class="glass-input-group">
+                            <select id="countryCode" class="glass-input" style="margin-bottom: 10px;">
+                                <option value="+1">+1 (USA)</option>
+                                <option value="+91">+91 (India)</option>
+                                <option value="+44">+44 (UK)</option>
+                                <option value="+61">+61 (Australia)</option>
+                                <option value="+971">+971 (UAE)</option>
+                            </select>
+                        </div>
+                        <div class="glass-input-group">
+                            <input type="tel" id="phoneLoginInput" class="glass-input" placeholder="Enter phone number">
+                            <span class="glass-highlight"></span>
+                        </div>
+                        <button class="send-otp-btn" onclick="sendOTP()">Send OTP</button>
+                    </div>
+                    <div class="otp-verification" id="otpVerification" style="display: none;">
+                        <p class="otp-sent-text">OTP sent to your phone</p>
+                        <div class="otp-inputs">
+                            <input type="text" class="otp-input" maxlength="1" data-index="0">
+                            <input type="text" class="otp-input" maxlength="1" data-index="1">
+                            <input type="text" class="otp-input" maxlength="1" data-index="2">
+                            <input type="text" class="otp-input" maxlength="1" data-index="3">
+                            <input type="text" class="otp-input" maxlength="1" data-index="4">
+                            <input type="text" class="otp-input" maxlength="1" data-index="5">
+                        </div>
+                        <button class="verify-otp-btn" onclick="verifyOTP()">Verify OTP</button>
+                        <button class="resend-otp-btn" onclick="resendOTP()">Resend OTP</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Success Modal -->
+    <div class="premium-success-modal" id="successModal">
+        <div class="success-background"></div>
+        <div class="success-content-wrapper">
+            <div class="success-checkmark">
+                <svg class="checkmark-svg" viewBox="0 0 52 52">
+                    <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                    <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+            </div>
+            <h2 class="success-title">Success!</h2>
+            <p class="success-message" id="successMessage">Your submission was successful.</p>
+            <button class="premium-close-btn" onclick="closeSuccessModal()">
+                <span>Continue</span>
+                <span class="btn-arrow">→</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-content">
+            <button class="close-btn" onclick="closeProfileModal()">&times;</button>
+            <div class="profile-header">
+                <img src="" alt="Profile" class="profile-large-photo" id="profileLargePhoto">
+                <h2 id="profileLargeName">User Name</h2>
+                <p id="profileLargeEmail">user@email.com</p>
+            </div>
+            <div class="profile-details" id="profileDetailsContent">
+                <!-- Profile details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- My Bookings Modal -->
+    <div class="bookings-modal" id="bookingsModal">
+        <div class="bookings-content">
+            <button class="close-btn" onclick="closeBookingsModal()">&times;</button>
+            <h2>My Bookings</h2>
+            <div class="user-bookings-list" id="userBookingsList">
+                <!-- User bookings will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Premium Toll-Free Contact Widget -->
+    <div class="premium-contact-widget" id="premiumContactWidget">
+        <div class="contact-toggle-btn" onclick="toggleContactWidget()">
+            <span class="contact-icon">📞</span>
+            <span class="contact-label">Contact Us</span>
+        </div>
+        <div class="contact-panel" id="contactPanel">
+            <div class="contact-panel-header">
+                <h3>Premium Support</h3>
+                <button class="contact-close-btn" onclick="toggleContactWidget()">&times;</button>
+            </div>
+            <div class="contact-panel-content">
+                <div class="contact-number-display">
+                    <span class="contact-label-text">Toll-Free Number</span>
+                    <a href="tel:9366017649" class="contact-number">9366017649</a>
+                </div>
+                <div class="contact-info">
+                    <p>Available 24/7 for premium support</p>
+                    <p class="contact-subtext">Professional assistance for all your needs</p>
+                </div>
+                <a href="tel:9366017649" class="contact-call-btn">
+                    <span>📞</span> Call Now
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>Powered by tgtushar07</p>
+            <p>High Secure 🔐 Web Developer</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
